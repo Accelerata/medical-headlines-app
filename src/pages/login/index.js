@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
-import { Button, Form, Input, message } from "antd";
-import { loginApi, getCodeApi, registerApi } from "@/api";
+import { Button, Input, Toast } from "antd-mobile";
+import { loginApi, getCodeApi, registerApi, forgotPasswordApi } from "@/api";
 
 const Login = () => {
+  const navigate = useNavigate();
   // mode: 'login' 密码登录 | 'register' 验证码注册 | 'forgot' 忘记密码
   const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
@@ -38,15 +40,15 @@ const Login = () => {
   const handleGetCode = async () => {
     const emailReg = /^[^\s@]+@[^\s@]+$/; // 简单校验：包含 @，前后都要有内容
     if (!emailReg.test(email)) {
-      message.error("请输入正确的邮箱");
+      Toast.show({ content: "请输入正确的邮箱", icon: "fail" });
       return;
     }
     const res = await getCodeApi({ email });
     if (res.code === 200) {
-      message.success("验证码发送成功");
+      Toast.show({ content: "验证码发送成功", icon: "success" });
       setCode(res.data);
     } else {
-      message.error("验证码发送失败");
+      Toast.show({ content: "验证码发送失败", icon: "fail" });
       return;
     }
   };
@@ -54,7 +56,7 @@ const Login = () => {
   const handlebutton = async () => {
     const emailReg = /^[^\s@]+@[^\s@]+$/; // 简单校验：包含 @，前后都要有内容
     if (!emailReg.test(email)) {
-      message.error("请输入正确的邮箱");
+      Toast.show({ content: "请输入正确的邮箱", icon: "fail" });
       return;
     }
     const codeReg = /^\d{6}$/; // 6 位数字
@@ -62,35 +64,49 @@ const Login = () => {
 
     if (isLogin) {
       if (!passwordReg.test(password)) {
-        message.error("请输入正确的密码");
+        Toast.show({ content: "请输入正确的密码", icon: "fail" });
         return;
       }
       const res = await loginApi({ email, password });
       if (res.code === 200) {
-        message.success("登录成功");
+        Toast.show({ content: "登录成功", icon: "success" });
+        // 存储用户信息
+        navigate("/");
+      } else {
+        Toast.show({ content: res.message || "登录失败", icon: "fail" });
       }
     } else if (isRegister) {
       if (!codeReg.test(code)) {
-        message.error("请输入正确的验证码");
+        Toast.show({ content: "请输入正确的验证码", icon: "fail" });
         return;
       }
       if (!passwordReg.test(password)) {
-        message.error("请输入正确的密码");
+        Toast.show({ content: "请输入正确的密码", icon: "fail" });
         return;
       }
       const res = await registerApi({ email, code, password });
       if (res.code === 200) {
-        message.success("注册成功");
+        Toast.show({ content: "注册成功", icon: "success" });
+        setMode("login");
       } else {
-        message.error(res.message);
+        Toast.show({ content: res.message || "注册失败", icon: "fail" });
       }
     } else {
-      // 忘记密码：验证码校验通过后的逻辑（如跳转设置新密码页），此处可后续对接找回密码接口
       if (!codeReg.test(code)) {
-        message.error("请输入正确的验证码");
+        Toast.show({ content: "请输入正确的验证码", icon: "fail" });
         return;
       }
-      message.info("验证码校验通过，找回密码接口待对接");
+      if (!passwordReg.test(password)) {
+        Toast.show({ content: "请输入正确格式的密码", icon: "fail" });
+        return;
+      }
+      const res = await forgotPasswordApi({ email, code, password });
+      if (res.code === 200) {
+        Toast.show({ content: "找回密码成功", icon: "success" });
+        setMode("login");
+      } else {
+        Toast.show({ content: res.message || "找回密码失败", icon: "fail" });
+      }
     }
   };
 
@@ -102,48 +118,59 @@ const Login = () => {
         {isForgot && "找回密码"}
       </div>
       <div className="login-content">
-        <Form className="login-form">
-          <Form.Item name="username" label="邮箱">
+        <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+          <div className="form-item">
+            <label>邮箱</label>
             <Input
               value={email}
-              onChange={(e) => setEmail(e.target.value.trim())}
+              onChange={(val) => setEmail((val || "").trim())}
+              placeholder="请输入邮箱"
             />
-          </Form.Item>
+          </div>
           {usePassword && (
-            <Form.Item name="password" label="密码">
-              <Input.Password
+            <div className="form-item">
+              <label>密码</label>
+              <Input
+                type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value.trim())}
+                onChange={(val) => setPassword((val || "").trim())}
                 placeholder="请输入密码"
               />
-            </Form.Item>
+            </div>
           )}
           {useCode && (
-            <div>
-              <Form.Item name="password" label="密码">
-                <Input.Password
+            <>
+              <div className="form-item">
+                <label>密码</label>
+                <Input
+                  type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value.trim())}
+                  onChange={(val) => setPassword((val || "").trim())}
                   placeholder="请输入新密码"
                 />
-              </Form.Item>
-              <Form.Item name="code" label="验证码">
+              </div>
+              <div className="form-item">
+                <label>验证码</label>
                 <div className="code-row">
                   <Input
                     value={code}
-                    onChange={(e) => setCode(e.target.value.trim())}
+                    onChange={(val) => setCode((val || "").trim())}
                     placeholder="请输入验证码"
                   />
-                  <Button type="primary" onClick={handleGetCode}>
+                  <Button
+                    style={{ width: "100px", height: "40px", fontSize: "14px" }}
+                    color="primary"
+                    onClick={handleGetCode}
+                  >
                     获取验证码
                   </Button>
                 </div>
-              </Form.Item>
-            </div>
+              </div>
+            </>
           )}
-        </Form>
+        </form>
         <div className="login-button">
-          <Button type="primary" htmlType="submit" onClick={handlebutton}>
+          <Button block color="primary" onClick={handlebutton}>
             {isLogin && "登录"}
             {isRegister && "注册"}
             {isForgot && "找回密码"}
@@ -151,18 +178,18 @@ const Login = () => {
           <div className="login-links">
             {isLogin && (
               <>
-                <Button type="link" onClick={goRegister}>
+                <span className="login-link" onClick={goRegister}>
                   没有账号？去注册
-                </Button>
-                <Button type="link" onClick={goForgot}>
+                </span>
+                <span className="login-link" onClick={goForgot}>
                   忘记密码？
-                </Button>
+                </span>
               </>
             )}
             {(isRegister || isForgot) && (
-              <Button type="link" onClick={goLogin}>
+              <span className="login-link" onClick={goLogin}>
                 已有账号？去登录
-              </Button>
+              </span>
             )}
           </div>
         </div>

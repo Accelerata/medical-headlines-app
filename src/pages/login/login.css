@@ -22,11 +22,35 @@
   width: 280px;
 }
 
+/* 表单项：标签 + 输入，与之前 antd Form.Item 排版一致 */
+.form-item {
+  margin-bottom: 16px;
+}
+.form-item label {
+  display: block;
+  margin-bottom: 8px;
+  color: #000;
+  font-size: 14px;
+}
+.form-item .adm-input,
+.form-item input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* 表单下方的按钮区域：左侧主按钮，右侧两行文字链接 */
 .login-button {
   display: flex;
   align-items: center;
   gap: 16px;
+  width: 280px;
+}
+
+.login-button .adm-button {
+  width: 80px;
+  height: 40px;
+  font-size: 14px;
+  margin-right: 60px;
 }
 
 .login-links {
@@ -35,11 +59,20 @@
   align-items: flex-start;
 }
 
+.login-link {
+  font-size: 12px;
+  color: #1677ff;
+  cursor: pointer;
+  line-height: 1.6;
+}
+
 .code-row {
   display: flex;
   gap: 8px; /* 输入框和按钮之间的间距 */
 }
 
-.code-row .ant-input {
+.code-row .ant-input,
+.code-row .adm-input,
+.code-row input {
   flex: 1; /* 让输入框自动撑满剩余空间 */
 }
