@@ -1,0 +1,45 @@
+.login-header {
+  height: 80px;
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 80px;
+  margin-top: 60px;
+}
+
+/* 整个登录区域：水平 + 垂直居中 */
+.login-content {
+  /* min-height: 100vh;          占满整个视口高度 */
+  display: flex;
+  flex-direction: column; /* 让表单和按钮上下排布 */
+  justify-content: center; /* 垂直居中 */
+  align-items: center; /* 水平居中 */
+}
+
+/* 表单本身的宽度 */
+.login-form {
+  width: 280px;
+}
+
+/* 表单下方的按钮区域：左侧主按钮，右侧两行文字链接 */
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.login-links {
+  display: flex;
+  flex-direction: column; /* 没有账号 在上，忘记密码 在下 */
+  align-items: flex-start;
+}
+
+.code-row {
+  display: flex;
+  gap: 8px; /* 输入框和按钮之间的间距 */
+}
+
+.code-row .ant-input {
+  flex: 1; /* 让输入框自动撑满剩余空间 */
+}
