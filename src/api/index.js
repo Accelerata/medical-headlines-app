@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Toast } from "antd-mobile";
 
 // 创建 axios 实例，统一配置
 const request = axios.create({
@@ -22,12 +23,27 @@ request.interceptors.request.use(
 
 // 响应拦截器（统一处理错误、只返回 data）
 request.interceptors.response.use(
-  (response) => {
-    return response.data;
+  function (response) {
+    // 2xx 范围内的状态码都会触发该函数，说明请求成功
+    return response.data; // 通常直接返回 data 部分
   },
-  (error) => {
-    // 可以在这里做统一错误提示
-    return Promise.reject(error);
+  function (error) {
+    // 超出 2xx 范围的状态码（比如你遇到的 400, 401, 500）都会触发这个函数
+    // console.error("全局拦截到错误:", error);
+
+    // 统一提取后端的错误提示
+    const errorMsg =
+      error.response?.data?.msg ||
+      error.response?.data?.message ||
+      "服务器开小差了";
+
+    // 全局统一弹窗！
+    Toast.show({ content: errorMsg, icon: "fail" });
+
+    return Promise.resolve({
+      code: error.response?.status || 500, // 把 HTTP 状态码当做业务 code 返回
+      msg: errorMsg,
+    });
   },
 );
 

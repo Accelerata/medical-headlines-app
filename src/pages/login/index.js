@@ -44,6 +44,7 @@ const Login = () => {
       return;
     }
     const res = await getCodeApi({ email });
+    console.log(res);
     if (res.code === 200) {
       Toast.show({ content: "验证码发送成功", icon: "success" });
       setCode(res.data);
@@ -64,16 +65,21 @@ const Login = () => {
 
     if (isLogin) {
       if (!passwordReg.test(password)) {
-        Toast.show({ content: "请输入正确的密码", icon: "fail" });
+        Toast.show({
+          content: "请输入带大小写字母和数字的8位密码",
+          icon: "fail",
+        });
         return;
       }
       const res = await loginApi({ email, password });
+      console.log(res);
       if (res.code === 200) {
         Toast.show({ content: "登录成功", icon: "success" });
+        clearForm();
         // 存储用户信息
         navigate("/");
       } else {
-        Toast.show({ content: res.message || "登录失败", icon: "fail" });
+        Toast.show({ content: res.msg || "登录失败", icon: "fail" });
       }
     } else if (isRegister) {
       if (!codeReg.test(code)) {
@@ -85,11 +91,12 @@ const Login = () => {
         return;
       }
       const res = await registerApi({ email, code, password });
+      console.log(res);
       if (res.code === 200) {
         Toast.show({ content: "注册成功", icon: "success" });
         setMode("login");
       } else {
-        Toast.show({ content: res.message || "注册失败", icon: "fail" });
+        Toast.show({ content: res.msg || "注册失败", icon: "fail" });
       }
     } else {
       if (!codeReg.test(code)) {
@@ -100,12 +107,16 @@ const Login = () => {
         Toast.show({ content: "请输入正确格式的密码", icon: "fail" });
         return;
       }
-      const res = await forgotPasswordApi({ email, code, password });
+      const res = await forgotPasswordApi({
+        email,
+        code,
+        newPassword: password,
+      });
       if (res.code === 200) {
         Toast.show({ content: "找回密码成功", icon: "success" });
         setMode("login");
       } else {
-        Toast.show({ content: res.message || "找回密码失败", icon: "fail" });
+        Toast.show({ content: res.msg || "找回密码失败", icon: "fail" });
       }
     }
   };
@@ -170,7 +181,12 @@ const Login = () => {
           )}
         </form>
         <div className="login-button">
-          <Button block color="primary" onClick={handlebutton}>
+          <Button
+            block
+            color="primary"
+            className="login-submit-btn"
+            onClick={handlebutton}
+          >
             {isLogin && "登录"}
             {isRegister && "注册"}
             {isForgot && "找回密码"}

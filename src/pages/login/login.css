@@ -53,6 +53,11 @@
   margin-right: 60px;
 }
 
+/* 主按钮（登录/注册/找回密码）文字改小 */
+.login-submit-btn.adm-button {
+  font-size: 12px;
+}
+
 .login-links {
   display: flex;
   flex-direction: column; /* 没有账号 在上，忘记密码 在下 */
