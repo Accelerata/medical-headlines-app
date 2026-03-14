@@ -1,0 +1,24 @@
+/* 确保最外层容器占据整个屏幕视口高度 */
+.layout-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 100% 视口高度 */
+  width: 100%;
+  overflow: hidden; /* 防止整个页面出现意外的滚动条 */
+}
+
+/* 中间内容区域自动撑开并独立滚动 */
+.layout-content {
+  flex: 1; /* 占据除 TabBar 之外的所有剩余空间 */
+  overflow-y: auto; /* 内容超出时，仅在该区域内滚动 */
+  -webkit-overflow-scrolling: touch; /* 优化移动端 iOS 滚动体验 */
+}
+
+/* TabBar 组件自带了默认样式，
+    因为上方的 layout-content 设置了 flex: 1，
+    TabBar 会自然被推到最底部。
+  */
+
+.layout-root .adm-tab-bar {
+  border-top: 1px solid #eee; /* 可选：上边框 */
+}
