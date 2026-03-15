@@ -1,0 +1,61 @@
+.article-body {
+  display: flex;
+  flex-direction: row; /* 横向：文字左、图片右 */
+  align-items: flex-start;
+  width: 100%;
+  height: 90px;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.article-body .article-title {
+  margin-top: 4px;
+  margin-left: 8px;
+  font-size: 15px;
+  flex: 1; /* 文字占剩余空间，在左侧 */
+  min-width: 0; /* 防止文字把布局撑爆 */
+}
+
+.article-body .article-image {
+  flex-shrink: 0;
+  width: 120px;
+  height: 82px;
+  object-fit: cover; /* 图片按比例裁剪填满 */
+  margin-right: 8px;
+  margin-top: 4px;
+}
+
+.article-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 20px;
+}
+
+.article-footer .article-footer-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 20px;
+}
+
+.article-footer-left .article-footer-left-avatar {
+  margin-left: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.article-footer .article-footer-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  gap: 8px;
+  margin-right: 8px;
+}

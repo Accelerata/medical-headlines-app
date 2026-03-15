@@ -1,6 +1,7 @@
 import { SearchBar } from "antd-mobile";
 import { UserCircleOutline } from "antd-mobile-icons";
 import "./homepage.css";
+import ArticleList from "@/components/articlelist";
 
 const labels = [
   "推荐",
@@ -40,6 +41,8 @@ const Homepage = () => {
           );
         })}
       </div>
+
+      <ArticleList />
     </>
   );
 };
