@@ -4,7 +4,7 @@ import "./login.css";
 import { Button, Input, Toast } from "antd-mobile";
 import { loginApi, getCodeApi, registerApi, forgotPasswordApi } from "@/api";
 import { useDispatch } from "react-redux";
-import store from "@/store/index";
+import { setUserInfo } from "@/store/modules/userstore";
 
 const Login = () => {
   const dispatch = useDispatch();

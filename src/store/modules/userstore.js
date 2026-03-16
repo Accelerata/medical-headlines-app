@@ -10,7 +10,7 @@ const userStore = createSlice({
   },
   reducers: {
     setUserInfo: (state, action) => {
-      state.userInfo = action.payload;
+      state.userInfo = action.payload.data;
       LOCAL_setUserInfo(action.payload.data);
       LOCAL_setToken(action.payload.token);
     },

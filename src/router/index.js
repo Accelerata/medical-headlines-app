@@ -4,13 +4,14 @@ import Login from "@/pages/login";
 import Layout from "@/pages/layout";
 import Publish from "@/pages/publish";
 import Person from "@/pages/person";
+import Article from "@/components/article";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
       {
-        path: "/",
+        path: "/:artcategory?",
         element: <Homepage />,
       },
       {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/article/:id?",
+    element: <Article />,
   },
 ]);
 

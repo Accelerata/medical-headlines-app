@@ -1,17 +1,13 @@
 const STORAGE = window.localStorage;
 const storage = {
-  get(key, data = []) {
+  get(key) {
     if (STORAGE) {
-      return STORAGE.getItem(key)
-        ? Array.isArray(data)
-          ? JSON.parse(STORAGE.getItem(key))
-          : STORAGE.getItem(key)
-        : data;
+      return STORAGE.getItem(key);
     }
   },
   set(key, val) {
     if (STORAGE) {
-      STORAGE.setItem(key, val);
+      STORAGE.setItem(key, JSON.stringify(val));
     }
   },
   clear(key) {
@@ -38,7 +34,7 @@ export function LOCAL_getUserInfo() {
 }
 
 export function LOCAL_setUserInfo(userInfo) {
-  storage.set("MHA_userInfo", JSON.stringify(userInfo));
+  storage.set("MHA_userInfo", userInfo);
 }
 
 export function LOCAL_clearUserInfo() {

@@ -4,7 +4,7 @@ import { LOCAL_getToken } from "@/utils/localstorage";
 
 // 创建 axios 实例，统一配置
 const request = axios.create({
-  baseURL: "http://10.11.95.159:8080", // 基础请求地址
+  baseURL: "http://localhost:8081", // 本地后端基础请求地址
   timeout: 10000, // 超时时间，可按需调整
 });
 
@@ -30,7 +30,7 @@ request.interceptors.response.use(
   },
   function (error) {
     // 超出 2xx 范围的状态码（比如你遇到的 400, 401, 500）都会触发这个函数
-    // console.error("全局拦截到错误:", error);
+    console.error("全局拦截到错误:", error);
 
     // 统一提取后端的错误提示
     const errorMsg =

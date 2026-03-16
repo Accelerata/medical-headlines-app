@@ -3,6 +3,8 @@ import { HeartOutline } from "antd-mobile-icons";
 import { useState } from "react";
 import { getArticleListApi } from "@/api";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { MessageOutline } from "antd-mobile-icons";
 
 // const articlelist = [
 //   {
@@ -183,40 +185,49 @@ const ArticleList = () => {
   const [articleList, setArticleList] = useState([]);
 
   useEffect(() => {
-    getArticleListApi().then((res) => {
+    async function fetchArticleList() {
+      const res = await getArticleListApi();
+      console.log(res);
       setArticleList(res.data);
-    });
+    }
+    fetchArticleList();
   }, []);
 
   return (
     <>
-      <div className="article-list">
+      <div>
         {articleList.map((item, index) => {
           return (
-            <div className="article-list">
-              <div className="article-body">
-                <div className="article-title">{item.title}</div>
-                <img
-                  className="article-image"
-                  alt={`${item.title}的封面`}
-                  src={item.image}
-                ></img>
-              </div>
-              <div className="article-footer">
-                <div className="article-footer-left">
-                  <img
-                    className="article-footer-left-avatar"
-                    alt="作者头像"
-                    src={item.authoravatar}
-                  ></img>
-                  <div>{item.authorname}</div>
-                  <div>{item.date}</div>
+            <div key={item.postid} className="article-list">
+              <Link className="article-link" to={`/article/${item.postid}`}>
+                <div className="article-body">
+                  <div className="article-title">{item.title}</div>
+                  {item.image && (
+                    <img
+                      className="article-image"
+                      alt={`${item.title}的封面`}
+                      src={item.image}
+                    ></img>
+                  )}
                 </div>
-                <div className="article-footer-right">
-                  <HeartOutline />
-                  <div>{item.likecount}</div>
+                <div className="article-footer">
+                  <div className="article-footer-left">
+                    <img
+                      className="article-footer-left-avatar"
+                      alt="作者头像"
+                      src={item.authorAvatar}
+                    ></img>
+                    <div>{item.authorname}</div>
+                    <div>{item.date}</div>
+                  </div>
+                  <div className="article-footer-right">
+                    <HeartOutline />
+                    <div>{item.like_count}</div>
+                    <MessageOutline />
+                    <div>{item.comment_count}</div>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           );
         })}
