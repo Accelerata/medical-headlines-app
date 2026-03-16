@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { Button, Input, Toast } from "antd-mobile";
 import { loginApi, getCodeApi, registerApi, forgotPasswordApi } from "@/api";
+import { useDispatch } from "react-redux";
+import store from "@/store/index";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   // mode: 'login' 密码登录 | 'register' 验证码注册 | 'forgot' 忘记密码
   const [mode, setMode] = useState("login");
@@ -37,6 +40,7 @@ const Login = () => {
     setMode("forgot");
   };
 
+  // 获取验证码
   const handleGetCode = async () => {
     const emailReg = /^[^\s@]+@[^\s@]+$/; // 简单校验：包含 @，前后都要有内容
     if (!emailReg.test(email)) {
@@ -47,13 +51,13 @@ const Login = () => {
     console.log(res);
     if (res.code === 200) {
       Toast.show({ content: "验证码发送成功", icon: "success" });
-      setCode(res.data);
     } else {
       Toast.show({ content: "验证码发送失败", icon: "fail" });
       return;
     }
   };
 
+  // 登录、注册、找回密码
   const handlebutton = async () => {
     const emailReg = /^[^\s@]+@[^\s@]+$/; // 简单校验：包含 @，前后都要有内容
     if (!emailReg.test(email)) {
@@ -63,6 +67,7 @@ const Login = () => {
     const codeReg = /^\d{6}$/; // 6 位数字
     const passwordReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
+    // 登录
     if (isLogin) {
       if (!passwordReg.test(password)) {
         Toast.show({
@@ -77,10 +82,12 @@ const Login = () => {
         Toast.show({ content: "登录成功", icon: "success" });
         clearForm();
         // 存储用户信息
+        dispatch(setUserInfo({ data: res.data, token: res.token }));
         navigate("/");
       } else {
         Toast.show({ content: res.msg || "登录失败", icon: "fail" });
       }
+      // 注册
     } else if (isRegister) {
       if (!codeReg.test(code)) {
         Toast.show({ content: "请输入正确的验证码", icon: "fail" });
@@ -98,6 +105,7 @@ const Login = () => {
       } else {
         Toast.show({ content: res.msg || "注册失败", icon: "fail" });
       }
+      // 找回密码
     } else {
       if (!codeReg.test(code)) {
         Toast.show({ content: "请输入正确的验证码", icon: "fail" });

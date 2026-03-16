@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Toast } from "antd-mobile";
+import { LOCAL_getToken } from "@/utils/localstorage";
 
 // 创建 axios 实例，统一配置
 const request = axios.create({
@@ -10,10 +11,10 @@ const request = axios.create({
 // 请求拦截器（例如统一带上 token，可以后面再补）
 request.interceptors.request.use(
   (config) => {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token = LOCAL_getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -62,8 +63,14 @@ export const registerApi = (data) => {
   return request.post("/api/register", data);
 };
 
+// 忘记密码接口：POST /api/reset-password-login
 export const forgotPasswordApi = (data) => {
   return request.post("/api/reset-password-login", data);
+};
+
+// 获取文章列表接口：/api/article/page
+export const getArticleListApi = () => {
+  return request.get("/api/article/page");
 };
 
 export default request;
