@@ -1,4 +1,5 @@
 import "./person.css";
+import { Link } from "react-router-dom";
 //引入文章列表组件
 import ArticleList from "@/components/articlelist";
 
@@ -15,6 +16,9 @@ const Person = () => {
         </div>
         <div className="person-header-right">
           <div className="person-header-right-username">用户名</div>
+          <Link to="/editorperson">
+            <div className="person-header-right-button">编辑资料</div>
+          </Link>
         </div>
       </div>
 

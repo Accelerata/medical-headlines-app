@@ -4,16 +4,20 @@ import { LOCAL_getToken } from "@/utils/localstorage";
 
 // 创建 axios 实例，统一配置
 const request = axios.create({
-  baseURL: "http://localhost:8081", // 本地后端基础请求地址
+  baseURL: "http://172.20.10.3:8081", // 本地后端基础请求地址
   timeout: 10000, // 超时时间，可按需调整
 });
 
-// 请求拦截器（例如统一带上 token，可以后面再补）
+// 请求拦截器：统一带 token；FormData 时不要改 Content-Type，由浏览器自动带 boundary
 request.interceptors.request.use(
   (config) => {
     const token = LOCAL_getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    // 上传 FormData 时不要手动设 Content-Type，否则会丢掉 boundary，后端收不到文件
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
     }
     return config;
   },
@@ -73,4 +77,13 @@ export const getArticleListApi = () => {
   return request.get("/api/article/page");
 };
 
+// 图片上传接口 POST /api/article/upload-image
+export const uploadImageApi = (data) => {
+  return request.post("/api/article/upload-image", data);
+};
+
+//文章上传接口 POST /api/article
+export const uploadArticleApi = (data) => {
+  return request.post("/api/article", data);
+};
 export default request;

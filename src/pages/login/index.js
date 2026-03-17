@@ -5,8 +5,11 @@ import { Button, Input, Toast } from "antd-mobile";
 import { loginApi, getCodeApi, registerApi, forgotPasswordApi } from "@/api";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "@/store/modules/userstore";
-
+import { useKeyboard } from "@/utils/useKeyboard";
 const Login = () => {
+  // 1. 调用您的键盘 Hook，拿到当前键盘高度
+  const { keyboardHeight } = useKeyboard();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // mode: 'login' 密码登录 | 'register' 验证码注册 | 'forgot' 忘记密码
@@ -129,8 +132,27 @@ const Login = () => {
     }
   };
 
+  // 应对 iOS 键盘收起后页面留白的经典 Bug
+  const handleBlur = () => {
+    setTimeout(() => {
+      window.scrollTo(
+        0,
+        Math.max(document.body.scrollTop, document.documentElement.scrollTop),
+      );
+    }, 100);
+  };
+
   return (
-    <div>
+    <div
+      style={{
+        paddingBottom: `${keyboardHeight}px`, // 底部撑开键盘的高度
+        transition: "padding-bottom 0.2s ease-out", // 添加平滑过渡动画
+        height: "100vh",
+        overflowY: "auto", // 保证内容区域可以上下滑动
+        boxSizing: "border-box",
+      }}
+      onBlur={handleBlur} // 绑定失焦事件，修复 iOS 兼容性问题
+    >
       <div className="login-header">
         {isLogin && "登录你的头条 精彩永不丢失"}
         {isRegister && "注册你的头条 开启精彩世界"}

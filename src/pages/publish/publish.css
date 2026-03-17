@@ -1,0 +1,132 @@
+.publish-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f7f8fa;
+}
+
+.publish-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  background-color: #fff;
+}
+
+.publish-head-left {
+  font-size: 20px;
+}
+
+.publish-head-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.publish-head-right span {
+  color: #1677ff;
+}
+
+.publish-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.publish-btn.primary {
+  font-weight: 600;
+}
+
+.publish-btn.disabled {
+  opacity: 0.6;
+}
+
+.publish-btn.disabled {
+  pointer-events: none;
+}
+
+.publish-head-right span:last-child {
+  font-weight: 600;
+}
+
+.publish-head-right span:active {
+  opacity: 0.7;
+}
+
+.publish-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px 12px;
+  overflow: hidden;
+}
+
+.publish-title-input {
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: transparent;
+}
+
+.publish-title-input::placeholder {
+  color: #b0b0b0;
+}
+
+.publish-category-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 8px 0;
+}
+
+.publish-category-label {
+  font-size: 14px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.publish-category-select {
+  flex: 1;
+  max-width: 160px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  outline: none;
+  appearance: auto;
+}
+
+.publish-category-select:focus {
+  border-color: #1677ff;
+}
+
+.publish-editor-wrapper {
+  margin-top: 8px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+.publish-editor-toolbar {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.publish-editor-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.publish-editor-container .w-e-text-container {
+  min-height: 220px;
+}

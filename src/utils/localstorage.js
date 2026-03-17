@@ -18,7 +18,19 @@ const storage = {
 };
 
 export function LOCAL_getToken() {
-  return storage.get("MHA_token");
+  const raw = storage.get("MHA_token");
+  if (!raw) return null;
+
+  // 兼容之前用 JSON.stringify 存进去的字符串（会多一层引号）
+  try {
+    const parsed = JSON.parse(raw);
+    if (typeof parsed === "string") return parsed;
+  } catch (e) {
+    // ignore
+  }
+
+  // 兜底：去掉首尾多余引号
+  return raw.replace(/^"|"$/g, "");
 }
 
 export function LOCAL_setToken(token) {
@@ -40,3 +52,15 @@ export function LOCAL_setUserInfo(userInfo) {
 export function LOCAL_clearUserInfo() {
   storage.clear("MHA_userInfo");
 }
+
+// export function LOCAL_getDraft() {
+//   return storage.get("MHA_draft");
+// }
+
+// export function LOCAL_setDraft(draft) {
+//   storage.set("MHA_draft", draft);
+// }
+
+// export function LOCAL_clearDraft() {
+//   storage.clear("MHA_draft");
+// }

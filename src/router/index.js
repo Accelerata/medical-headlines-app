@@ -5,6 +5,8 @@ import Layout from "@/pages/layout";
 import Publish from "@/pages/publish";
 import Person from "@/pages/person";
 import Article from "@/components/article";
+import EditorPerson from "@/pages/editorperson";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/article/:id?",
     element: <Article />,
+  },
+  {
+    path: "/editorperson",
+    element: <EditorPerson />,
   },
 ]);
 
