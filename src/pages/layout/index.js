@@ -1,7 +1,6 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AppOutline, AddCircleOutline, UserOutline } from "antd-mobile-icons";
 import { TabBar } from "antd-mobile";
-import { useNavigate } from "react-router-dom";
 import "./layout.css";
 
 const tabs = [
@@ -12,21 +11,23 @@ const tabs = [
     path: "/",
   },
   {
-    key: "publish",
+    key: "/publish",
     title: "发布",
     icon: <AddCircleOutline />,
     path: "/publish",
   },
   {
-    key: "person",
+    key: "/person",
     title: "我的",
     icon: <UserOutline />,
-    path: "/persona",
+    path: "/person",
   },
 ];
 
 const Layout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { pathname } = location;
 
   const switchRoute = (path) => {
     navigate(path);
@@ -37,7 +38,7 @@ const Layout = () => {
       <div className="layout-content">
         <Outlet />
       </div>
-      <TabBar onChange={(path) => switchRoute(path)}>
+      <TabBar activeKey={pathname} onChange={switchRoute}>
         {tabs.map((item) => (
           <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
         ))}

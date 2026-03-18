@@ -102,6 +102,7 @@ const Publish = () => {
       const formData = new FormData();
       formData.append("file", file);
       const uploadRes = await uploadImageApi(formData);
+      console.log(uploadRes);
       if (!uploadRes || uploadRes.code !== 200) {
         Toast.show({
           content: uploadRes?.msg || "图片上传失败，请稍后重试",

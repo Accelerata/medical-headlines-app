@@ -86,4 +86,20 @@ export const uploadImageApi = (data) => {
 export const uploadArticleApi = (data) => {
   return request.post("/api/article", data);
 };
+
+//获取用户信息api GET /api/user/info
+export const getUserInfoApi = () => {
+  return request.get("/api/user/info");
+};
+
+//更新用户信息api PUT /api/user/info
+export const updateUserInfoApi = (data) => {
+  return request.put("/api/user/info", data);
+};
+
+//更新用户头像POST /api/user/avatar
+export const updateUserAvatarApi = (data) => {
+  return request.post("/api/user/avatar", data);
+};
+
 export default request;
