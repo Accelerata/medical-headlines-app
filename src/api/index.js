@@ -73,8 +73,14 @@ export const forgotPasswordApi = (data) => {
 };
 
 // 获取文章列表接口：/api/article/page
-export const getArticleListApi = () => {
-  return request.get("/api/article/page");
+export const getArticleListApi = (page = 1, size = 50, config = {}) => {
+  return request.get("/api/article/page", {
+    ...config,
+    params: {
+      page,
+      size,
+    },
+  });
 };
 
 // 图片上传接口 POST /api/article/upload-image

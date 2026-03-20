@@ -43,7 +43,7 @@ const Person = () => {
 
       <div className="person-bio">{userInfo.bio}</div>
       <div className="person-history">观看历史</div>
-      <ArticleList />
+      <ArticleList activeLabel="推荐" />
     </div>
   );
 };

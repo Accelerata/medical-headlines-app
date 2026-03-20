@@ -6,6 +6,7 @@ import Publish from "@/pages/publish";
 import Person from "@/pages/person";
 import Article from "@/components/article";
 import EditorPerson from "@/pages/editorperson";
+import Search from "@/pages/search";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: "/editorperson",
     element: <EditorPerson />,
+  },
+  {
+    path: "/search",
+    element: <Search />,
   },
 ]);
 

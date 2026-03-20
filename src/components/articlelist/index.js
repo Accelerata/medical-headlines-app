@@ -181,17 +181,26 @@ import { MessageOutline } from "antd-mobile-icons";
 //   },
 // ];
 
-const ArticleList = () => {
+const ArticleList = ({ activeLabel }) => {
   const [articleList, setArticleList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     async function fetchArticleList() {
-      const res = await getArticleListApi();
+      const res = await getArticleListApi(page, size, { signal });
       console.log(res);
-      setArticleList(res.data);
+      let list = res.data;
+      if (activeLabel !== "推荐" && activeLabel !== "热门") {
+        list = res.data.filter((item) => item.category === activeLabel);
+      }
+      setArticleList(list);
     }
     fetchArticleList();
-  }, []);
+    return () => controller.abort();
+  }, [activeLabel, page, size]);
 
   return (
     <>
