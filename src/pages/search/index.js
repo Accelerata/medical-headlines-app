@@ -19,15 +19,12 @@ const initialData = [
   "永辉喊话山姆",
   "郑建新涉嫌受贿被公诉",
   "个人贷款有新规定",
-  "央视财经",
-  "央视财经",
-  "央视财经",
-  "央视财经",
 ];
 
 const Search = () => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [keyword, setKeyword] = useState("");
   return (
     <div className="search">
       <div className="search-header">
@@ -38,8 +35,20 @@ const Search = () => {
           type="text"
           placeholder="请输入搜索内容"
           className="search-input"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              navigate(`/searchto/${keyword}`);
+            }
+          }}
         />
-        <div className="search-header-right">搜索</div>
+        <div
+          className="search-header-right"
+          onClick={() => navigate(`/searchto/${keyword}`)}
+        >
+          搜索
+        </div>
       </div>
       <div className="search-history">
         <div className="search-history-title">

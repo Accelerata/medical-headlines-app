@@ -7,6 +7,7 @@ import Person from "@/pages/person";
 import Article from "@/components/article";
 import EditorPerson from "@/pages/editorperson";
 import Search from "@/pages/search";
+import SearchTo from "@/pages/searchto";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <Search />,
+  },
+  {
+    path: "/searchto/:keyword?",
+    element: <SearchTo />,
   },
 ]);
 

@@ -1,0 +1,47 @@
+/* 固定在视口顶部：用 position:fixed，不能写 display:fixed（无效） */
+.searchto-header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* 避免正文从屏幕顶端开始，被固定头部挡住（与 .article-header 高度+内边距大致一致） */
+.searchto-page {
+  padding-top: 80px;
+}
+
+.searchto-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  padding: 10px;
+  font-size: 20px;
+}
+.searchto-search {
+  width: 100%;
+  flex: 1;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  height: 40px;
+  outline: none;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.searchto-header-right {
+  font-size: 16px;
+}
+
+/* 列表区域：正常文档流，撑高父级 .layout-content，才能在里面滚动 */
+.searchto-content {
+  width: 100%;
+  box-sizing: border-box;
+}
