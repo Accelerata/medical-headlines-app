@@ -108,4 +108,9 @@ export const updateUserAvatarApi = (data) => {
   return request.post("/api/user/avatar", data);
 };
 
+//获取文章详情api GET /api/article/{id}
+export const getArticleDetailApi = (id) => {
+  return request.get(`/api/article/${id}`);
+};
+
 export default request;

@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/:artcategory?",
+        path: "/",
         element: <Homepage />,
       },
       {

@@ -1,0 +1,146 @@
+/* 固定在视口顶部：用 position:fixed，不能写 display:fixed（无效） */
+.article-header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* 避免正文从屏幕顶端开始，被固定头部挡住（与 .article-header 高度+内边距大致一致） */
+.article-page {
+  padding-top: 80px;
+}
+
+.article-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.article-top-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  /* margin-right: 10px; */
+}
+.article-search {
+  width: 100%;
+  flex: 1;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  height: 40px;
+  outline: none;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.article-authorinfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* 左侧两行（昵称+时间）需要比单行更高，避免内容被裁切 */
+  min-height: 56px;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+.article-authorinfo-left {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  /* 不要 width:100%，否则在 flex 行里会占满整行，把右侧按钮挤出父容器 */
+  flex: 1;
+  min-width: 0;
+}
+
+.article-authorinfo-right {
+  flex-shrink: 0;
+}
+
+.article-authorinfo-left-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.article-authorinfo-left-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.article-authorinfo-left-info-name {
+  /* 一行显示 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* 加粗 */
+  font-weight: bold;
+  font-size: 16px;
+}
+.article-authorinfo-left-info-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.article-authorinfo-right-button {
+  width: 60px;
+  height: 30px;
+  font-size: 12px;
+  color: #000;
+  /*浅灰色按钮*/
+  background-color: #f0f0f0;
+}
+
+.article-content-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  /* 三行后省略：不能用 white-space: nowrap（会强制单行） */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3; /* 新标准，与 webkit 配合 */
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.article-content-content {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  line-height: 1.5;
+  padding-bottom: 40px;
+}
+
+.article-content-footer {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #fff;
+  box-sizing: border-box;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 10px;
+  font-size: 14px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
