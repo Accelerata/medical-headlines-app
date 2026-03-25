@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./login.css";
 import { Button, Input, Toast } from "antd-mobile";
 import { loginApi, getCodeApi, registerApi, forgotPasswordApi } from "@/api";
@@ -12,6 +12,7 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   // mode: 'login' 密码登录 | 'register' 验证码注册 | 'forgot' 忘记密码
   const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
@@ -86,7 +87,8 @@ const Login = () => {
         clearForm();
         // 存储用户信息
         dispatch(setUserInfo({ data: res.data, token: res.token }));
-        navigate("/");
+        const redirectPath = searchParams.get("redirect") || "/";
+        navigate(redirectPath, { replace: true });
       } else {
         Toast.show({ content: res.msg || "登录失败", icon: "fail" });
       }

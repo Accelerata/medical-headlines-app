@@ -22,7 +22,7 @@
   height: 82px;
   object-fit: cover; /* 图片按比例裁剪填满 */
   margin-right: 8px;
-  margin-top: 4px;
+  margin-top: 10px;
 }
 
 .article-footer {

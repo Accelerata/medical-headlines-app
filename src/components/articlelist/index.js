@@ -211,11 +211,11 @@ const ArticleList = ({ activeLabel }) => {
               <Link className="article-link" to={`/article/${item.postid}`}>
                 <div className="article-body">
                   <div className="article-title">{item.title}</div>
-                  {item.image && (
+                  {item.images && (
                     <img
                       className="article-image"
                       alt={`${item.title}的封面`}
-                      src={item.image}
+                      src={item.images[0]}
                     ></img>
                   )}
                 </div>

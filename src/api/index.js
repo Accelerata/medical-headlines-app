@@ -1,12 +1,28 @@
 import axios from "axios";
 import { Toast } from "antd-mobile";
-import { LOCAL_getToken } from "@/utils/localstorage";
+import {
+  LOCAL_clearToken,
+  LOCAL_clearUserInfo,
+  LOCAL_getToken,
+} from "@/utils/localstorage";
 
 // 创建 axios 实例，统一配置
 const request = axios.create({
-  baseURL: "http://172.20.10.3:8081", // 本地后端基础请求地址
+  baseURL: "http://172.20.10.3:8082", // 本地后端基础请求地址
   timeout: 10000, // 超时时间，可按需调整
 });
+
+let isRedirectingToLogin = false;
+
+const redirectToLogin = () => {
+  if (isRedirectingToLogin) return;
+  isRedirectingToLogin = true;
+  LOCAL_clearToken();
+  LOCAL_clearUserInfo();
+  const currentPath = window.location.pathname + window.location.search;
+  const target = `/login?redirect=${encodeURIComponent(currentPath)}`;
+  window.location.replace(target);
+};
 
 // 请求拦截器：统一带 token；FormData 时不要改 Content-Type，由浏览器自动带 boundary
 request.interceptors.request.use(
@@ -42,11 +58,21 @@ request.interceptors.response.use(
       error.response?.data?.message ||
       "服务器开小差了";
 
-    // 全局统一弹窗！
+    const status = error.response?.status;
+    if (status === 401) {
+      Toast.show({ content: "登录已过期，请重新登录", icon: "fail" });
+      redirectToLogin();
+      return Promise.resolve({
+        code: 401,
+        msg: "登录已过期，请重新登录",
+      });
+    }
+
+    // 全局统一弹窗
     Toast.show({ content: errorMsg, icon: "fail" });
 
     return Promise.resolve({
-      code: error.response?.status || 500, // 把 HTTP 状态码当做业务 code 返回
+      code: status || 500, // 把 HTTP 状态码当做业务 code 返回
       msg: errorMsg,
     });
   },
@@ -111,6 +137,41 @@ export const updateUserAvatarApi = (data) => {
 //获取文章详情api GET /api/article/{id}
 export const getArticleDetailApi = (id) => {
   return request.get(`/api/article/${id}`);
+};
+
+//文章点赞接口 /api/article/{id}/like
+export const likeArticleApi = (id) => {
+  return request.post(`/api/article/${id}/like`);
+};
+
+//文章取消点赞接口 /api/article/{id}/like
+export const unlikeArticleApi = (id) => {
+  return request.delete(`/api/article/${id}/like`);
+};
+
+//根据用户id查询用户是否点赞 GET /api/posts/{postId}/liked
+export const isLikedArticleApi = (postId) => {
+  return request.get(`/api/posts/${postId}/liked`);
+};
+
+//获取评论列表接口/api/posts/{postId}/comments GET
+export const getCommentListApi = (postId) => {
+  return request.get(`/api/posts/${postId}/comments`);
+};
+
+//发布评论/api/posts/{postId}/comments POST
+export const publishCommentApi = (postId, { content }) => {
+  return request.post(`/api/posts/${postId}/comments`, { content });
+};
+
+//评论点赞接口 /api/comments/{commentId}/like
+export const likeCommentApi = (commentId) => {
+  return request.post(`/api/comments/${commentId}/like`);
+};
+
+//评论取消点赞接口 /api/comments/{commentId}/like
+export const unlikeCommentApi = (commentId) => {
+  return request.delete(`/api/comments/${commentId}/like`);
 };
 
 export default request;
