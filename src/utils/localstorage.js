@@ -53,14 +53,23 @@ export function LOCAL_clearUserInfo() {
   storage.clear("MHA_userInfo");
 }
 
-// export function LOCAL_getDraft() {
-//   return storage.get("MHA_draft");
-// }
+//搜索历史
+export function LOCAL_getSearchHistory() {
+  const raw = storage.get("MHA_searchHistory");
+  if (!raw) return [];
 
-// export function LOCAL_setDraft(draft) {
-//   storage.set("MHA_draft", draft);
-// }
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
 
-// export function LOCAL_clearDraft() {
-//   storage.clear("MHA_draft");
-// }
+export function LOCAL_setSearchHistory(searchHistory) {
+  storage.set("MHA_searchHistory", searchHistory);
+}
+
+export function LOCAL_clearSearchHistory() {
+  storage.clear("MHA_searchHistory");
+}

@@ -89,6 +89,9 @@
 }
 
 .search-history-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 14px;
   color: #333;
   overflow: hidden;

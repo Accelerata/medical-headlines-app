@@ -303,3 +303,10 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+.comment-list-body-all {
+  font-size: 14px;
+  color: #999;
+  padding: 10px;
+  box-sizing: border-box;
+}

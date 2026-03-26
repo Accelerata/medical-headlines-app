@@ -21,6 +21,10 @@ import {
   publishCommentApi,
   likeCommentApi,
   unlikeCommentApi,
+  getReplyCommentListApi,
+  publishReplyCommentApi,
+  likeReplyCommentApi,
+  unlikeReplyCommentApi,
 } from "@/api";
 const Article = () => {
   const [article, setArticle] = useState(null);
@@ -37,6 +41,7 @@ const Article = () => {
   const [replypopupshow, setReplypopupshow] = useState(false);
   const [currentComment, setCurrentComment] = useState(null);
   const [mode, setMode] = useState(null);
+  const [replyCommentList, setReplyCommentList] = useState([]);
 
   const refreshCommentList = useCallback(async () => {
     const commentListres = await getCommentListApi(id);
@@ -45,6 +50,19 @@ const Article = () => {
       setCommentList(commentListres.data || []);
     }
   }, [id]);
+
+  const refreshReplyCommentList = useCallback(async () => {
+    if (!currentComment) {
+      return;
+    }
+    const replyCommentListres = await getReplyCommentListApi(
+      currentComment.commentId,
+    );
+    console.log(replyCommentListres);
+    if (replyCommentListres?.code === 200) {
+      setReplyCommentList(replyCommentListres.data || []);
+    }
+  }, [currentComment]);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -176,6 +194,35 @@ const Article = () => {
     });
   };
 
+  // 发布回复评论
+  const sendReplyComment = async () => {
+    if (!commentValue.trim()) {
+      Toast.show({
+        content: "请输入回复内容",
+        icon: "fail",
+      });
+      return;
+    }
+    if (!currentComment) {
+      return;
+    }
+    const res = await publishReplyCommentApi(currentComment.commentId, {
+      content: commentValue,
+    });
+    if (res.code !== 200) {
+      Toast.show({
+        content: "发布回复评论失败",
+        icon: "fail",
+      });
+      return;
+    }
+    Toast.show({ content: "发布回复评论成功", icon: "success" });
+    setCommentValue("");
+    setKeyboardshow(false);
+    await refreshCommentList();
+    await refreshReplyCommentList();
+  };
+
   //评论点赞与取消点赞
   const handleCommentLike = async (commentId, isLiked) => {
     if (isLiked) {
@@ -186,6 +233,27 @@ const Article = () => {
     await refreshCommentList();
   };
 
+  const toggleReplyPopup = async (comment) => {
+    const res = await getReplyCommentListApi(comment.commentId);
+    console.log(res);
+
+    if (res.code === 200) {
+      setReplypopupshow(true);
+      setCurrentComment(comment);
+      setMode("reply");
+      setReplyCommentList(res.data);
+    }
+  };
+
+  //回复评论点赞与取消点赞
+  const handleReplyCommentLike = async (replyId, isLiked) => {
+    if (isLiked) {
+      await unlikeReplyCommentApi(replyId);
+    } else {
+      await likeReplyCommentApi(replyId);
+    }
+    await refreshReplyCommentList();
+  };
   return (
     <div className="article-page">
       <div className="article-header-container">
@@ -298,11 +366,7 @@ const Article = () => {
                             <div className="comment-list-body-item-right-footer">
                               <Button
                                 className="comment-list-body-item-right-footer-button"
-                                onClick={() => {
-                                  setReplypopupshow(true);
-                                  setCurrentComment(item);
-                                  setMode("reply");
-                                }}
+                                onClick={() => toggleReplyPopup(item)}
                               >
                                 {item.replyCount === 0
                                   ? "回复"
@@ -367,7 +431,76 @@ const Article = () => {
             >
               <div className="comment-list-popup-root">
                 <div className="comment-list-title">回复</div>
-                <div className="comment-list-body"></div>
+                <div className="comment-list-body">
+                  {currentComment ? (
+                    <div key={currentComment.commentId}>
+                      <div className="comment-list-body-item">
+                        <img
+                          alt="评论者头像"
+                          src={article?.authorAvatar}
+                          className="comment-list-body-item-left"
+                        ></img>
+                        <div className="comment-list-body-item-right">
+                          <div className="comment-list-body-item-right-header">
+                            <div>{currentComment.nickname}</div>
+                            <div>{formatTime(currentComment.createdAt)}</div>
+                          </div>
+                          <div className="comment-list-body-item-right-content">
+                            {currentComment.content}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="comment-list-body-all">全部回复</div>
+                  <div className="comment-list-body-all-list">
+                    {replyCommentList.length === 0 ? (
+                      <div className="comment-list-empty">
+                        暂无回复,快来抢占沙发
+                      </div>
+                    ) : (
+                      replyCommentList.map((item) => (
+                        <div key={item.commentId}>
+                          <div className="comment-list-body-item">
+                            <img
+                              alt="评论者头像"
+                              src={article?.authorAvatar}
+                              className="comment-list-body-item-left"
+                            ></img>
+                            <div className="comment-list-body-item-right">
+                              <div className="comment-list-body-item-right-header">
+                                <div>{item.nickname}</div>
+                                <div>{formatTime(item.createdAt)}</div>
+                              </div>
+                              <div className="comment-list-body-item-right-content">
+                                {item.content}
+                              </div>
+                              <div className="comment-list-body-item-right-footer">
+                                <div
+                                  onClick={() =>
+                                    handleReplyCommentLike(
+                                      item.replyId,
+                                      item.isLiked,
+                                    )
+                                  }
+                                >
+                                  {item.isLiked ? (
+                                    <HeartFill style={{ color: "red" }} />
+                                  ) : (
+                                    <HeartOutline />
+                                  )}
+                                  {item.likeCount}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
                 <div className="comment-list-footer">
                   <div
                     className="comment-list-footer-text"
@@ -404,7 +537,11 @@ const Article = () => {
                   className="comment-list-footer2-button"
                   type="primary"
                   onClick={() => {
-                    console.log(mode);
+                    if (mode === "comment") {
+                      sendComment();
+                    } else if (mode === "reply") {
+                      sendReplyComment();
+                    }
                   }}
                 >
                   发送

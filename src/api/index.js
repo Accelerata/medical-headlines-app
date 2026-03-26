@@ -174,4 +174,24 @@ export const unlikeCommentApi = (commentId) => {
   return request.delete(`/api/comments/${commentId}/like`);
 };
 
+//获取回复评论列表接口 /api/comments/{commentId}/replies
+export const getReplyCommentListApi = (commentId) => {
+  return request.get(`/api/comments/${commentId}/replies`);
+};
+
+//发布回复评论接口 /api/comments/{commentId}/replies POST
+export const publishReplyCommentApi = (commentId, { content }) => {
+  return request.post(`/api/comments/${commentId}/replies`, { content });
+};
+
+//回复评论点赞接口 /api/replies/{replyId}/like
+export const likeReplyCommentApi = (replyId) => {
+  return request.post(`/api/replies/${replyId}/like`);
+};
+
+//回复评论取消点赞接口 /api/replies/{replyId}/like
+export const unlikeReplyCommentApi = (replyId) => {
+  return request.delete(`/api/replies/${replyId}/like`);
+};
+
 export default request;
