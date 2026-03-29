@@ -50,6 +50,10 @@ const EditorPerson = () => {
       formData.append("file", file);
       const res = await updateUserAvatarApi(formData);
       console.log(res.data);
+      if (res.code === 413) {
+        Toast.show({ content: "图片大小过大", icon: "fail" });
+        return;
+      }
       if (!res || res.code !== 200) {
         Toast.show({ content: res?.msg || "头像更新失败", icon: "fail" });
         return;

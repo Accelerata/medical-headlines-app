@@ -194,4 +194,29 @@ export const unlikeReplyCommentApi = (replyId) => {
   return request.delete(`/api/replies/${replyId}/like`);
 };
 
+//根据用户id查询用户是否关注 /api/users/{targetUserId}/followed GET
+export const isFollowedApi = (targetUserId) => {
+  return request.get(`/api/users/${targetUserId}/followed`);
+};
+
+//关注接口 /api/users/{targetUserId}/follow（部分后端要求 JSON body，空对象即可）
+export const followApi = (targetUserId) => {
+  return request.post(`/api/users/${targetUserId}/follow`, {});
+};
+
+//取消关注接口 /api/users/{targetUserId}/follow
+export const unfollowApi = (targetUserId) => {
+  return request.delete(`/api/users/${targetUserId}/follow`);
+};
+
+//获取关注列表接口 /api/users/{userId}/following
+export const getFollowingListApi = (userId) => {
+  return request.get(`/api/users/${userId}/following`);
+};
+
+//获取粉丝列表接口 /api/users/{userId}/followers
+export const getFollowersListApi = (userId) => {
+  return request.get(`/api/users/${userId}/followers`);
+};
+
 export default request;

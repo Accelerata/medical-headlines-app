@@ -7,6 +7,7 @@ import Article from "@/components/article";
 import EditorPerson from "@/pages/editorperson";
 import Search from "@/pages/search";
 import SearchTo from "@/pages/searchto";
+import Followed from "@/pages/followed";
 import { LOCAL_getToken } from "@/utils/localstorage";
 import { createBrowserRouter, useLocation, Navigate } from "react-router-dom";
 
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
     element: (
       <RequireAuth>
         <SearchTo />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/followed",
+    element: (
+      <RequireAuth>
+        <Followed />
       </RequireAuth>
     ),
   },

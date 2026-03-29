@@ -1,0 +1,175 @@
+/* 整页占满视口，列表区域才能被 AutoSizer 量到非 0 高度 */
+.followed-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.followed-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.followed-virtual-list-host {
+  width: 100%;
+  height: 100%;
+}
+
+.followed-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fff;
+}
+
+.followed-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.followed-row-name {
+  font-size: 15px;
+  line-height: 1.2;
+  color: #333;
+}
+
+.followed-row-end {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+}
+
+.followed-row-end-isFollowed-button {
+  width: 70px;
+  height: 40px;
+  font-size: 12px;
+  /*浅灰背景，灰色字体*/
+  background-color: #f0f0f0;
+  color: #999;
+  border: none;
+}
+
+.followed-row-end-notFollowed-button {
+  width: 60px;
+  height: 40px;
+  font-size: 14px;
+  /*背景透明度*/
+  background-color: rgba(255, 49, 65, 0.3);
+  color: red;
+  border: none;
+}
+
+.followed-row-bio {
+  font-size: 12px;
+  line-height: 1.2;
+  color: #bfbfbf;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.followed-empty-state {
+  padding: 24px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+.followed-header {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 12px;
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 左侧返回区：固定宽度，图标靠左对齐 */
+.followed-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 40px;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+/* 标题相对整行水平居中（不受左侧宽度影响） */
+.followed-header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.followed-filter {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #999;
+}
+
+.followed-popup {
+  width: 100vw;
+  background-color: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* 排序弹层：标题居中、无右侧箭头、无列表分割线/底边 */
+.filter-sort-list .adm-list-header {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+
+.filter-sort-list.adm-list-default .adm-list-body {
+  border-top: none;
+  border-bottom: none;
+}
+
+.filter-sort-list .adm-list-item-content {
+  font-size: 14px;
+  border-top: none;
+}
+
+.filter-sort-list .adm-list-item-content-main {
+  flex: 1;
+  text-align: center;
+}
+
+.filter-sort-list .filter-sort-item--selected .adm-list-item-content-main {
+  color: #ff3141;
+}
+
+.filter-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  border-top: none;
+}

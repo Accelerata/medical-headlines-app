@@ -2,12 +2,24 @@ import "./person.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUserInfoApi } from "@/api";
+import { useNavigate } from "react-router-dom";
 //引入文章列表组件
 import ArticleList from "@/components/articlelist";
 
 const Person = () => {
   const [userInfo, setUserInfo] = useState({});
   const [avatarUrl, setAvatarUrl] = useState("");
+  const navigate = useNavigate();
+
+  const goFollowPage = (mode) => {
+    const userId = userInfo.userid;
+    const params = new URLSearchParams({ mode });
+    if (userId != null && userId !== "") {
+      params.set("userId", String(userId));
+    }
+    navigate(`/followed?${params.toString()}`);
+  };
+
   useEffect(() => {
     getUserInfoApi().then((res) => {
       console.log(res);
@@ -37,8 +49,12 @@ const Person = () => {
       </div>
 
       <div className="person-follow">
-        <div>0关注</div>
-        <div>0粉丝</div>
+        <div onClick={() => goFollowPage("following")}>
+          {userInfo.followingCount}关注
+        </div>
+        <div onClick={() => goFollowPage("followers")}>
+          {userInfo.followerCount}粉丝
+        </div>
       </div>
 
       <div className="person-bio">{userInfo.bio}</div>

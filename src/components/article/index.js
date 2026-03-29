@@ -25,7 +25,23 @@ import {
   publishReplyCommentApi,
   likeReplyCommentApi,
   unlikeReplyCommentApi,
+  isFollowedApi,
+  followApi,
+  unfollowApi,
 } from "@/api";
+import { LOCAL_getUserInfo } from "@/utils/localstorage";
+
+const getCurrentUserId = () => {
+  const raw = LOCAL_getUserInfo();
+  if (!raw) return null;
+  try {
+    const u = JSON.parse(raw);
+    return u?.id ?? u?.userId ?? u?.user_id ?? null;
+  } catch {
+    return null;
+  }
+};
+
 const Article = () => {
   const [article, setArticle] = useState(null);
   const { id } = useParams();
@@ -42,6 +58,7 @@ const Article = () => {
   const [currentComment, setCurrentComment] = useState(null);
   const [mode, setMode] = useState(null);
   const [replyCommentList, setReplyCommentList] = useState([]);
+  const [isFollowed, setIsFollowed] = useState(false);
 
   const refreshCommentList = useCallback(async () => {
     const commentListres = await getCommentListApi(id);
@@ -64,6 +81,7 @@ const Article = () => {
     }
   }, [currentComment]);
 
+  //查询文章详情
   useEffect(() => {
     const fetchArticle = async () => {
       const res = await getArticleDetailApi(id);
@@ -73,6 +91,25 @@ const Article = () => {
     };
     fetchArticle();
   }, [id, refreshCommentList]);
+
+  // 文章加载完成后再查是否关注作者；后端多为 authorId，需兼容 authorid
+  const authorIdForFollow =
+    article?.authorId ?? article?.authorid ?? article?.author_id;
+
+  useEffect(() => {
+    if (authorIdForFollow == null || authorIdForFollow === "") return;
+
+    const fetchIsFollowed = async () => {
+      const res = await isFollowedApi(authorIdForFollow);
+      console.log(res);
+      if (res?.data?.followed) {
+        setIsFollowed(true);
+      } else {
+        setIsFollowed(false);
+      }
+    };
+    fetchIsFollowed();
+  }, [authorIdForFollow]);
 
   //滚动显示顶部头像
   useEffect(() => {
@@ -106,6 +143,7 @@ const Article = () => {
         setIsLiked(false);
       }
     };
+
     fetchIsLiked();
   }, [id]);
 
@@ -254,6 +292,33 @@ const Article = () => {
     }
     await refreshReplyCommentList();
   };
+
+  //关注与取消关注
+  const handleFollow = async () => {
+    if (authorIdForFollow == null || authorIdForFollow === "") {
+      Toast.show({ content: "无法获取作者信息", icon: "fail" });
+      return;
+    }
+    const nextIsFollowed = !isFollowed;
+    if (!isFollowed) {
+      const me = getCurrentUserId();
+      if (me != null && String(me) === String(authorIdForFollow)) {
+        Toast.show({ content: "不能关注自己", icon: "fail" });
+        return;
+      }
+    }
+    const res = nextIsFollowed
+      ? await followApi(authorIdForFollow)
+      : await unfollowApi(authorIdForFollow);
+    if (!res || res.code !== 200) {
+      return;
+    }
+    setIsFollowed(nextIsFollowed);
+    Toast.show({
+      content: nextIsFollowed ? "关注成功" : "取消关注成功",
+      icon: "success",
+    });
+  };
   return (
     <div className="article-page">
       <div className="article-header-container">
@@ -294,8 +359,12 @@ const Article = () => {
         </div>
 
         <div className="article-authorinfo-right">
-          <Button className="article-authorinfo-right-button" type="primary">
-            关注
+          <Button
+            className="article-authorinfo-right-button"
+            type="primary"
+            onClick={handleFollow}
+          >
+            {isFollowed ? "已关注" : "关注"}
           </Button>
         </div>
       </div>
