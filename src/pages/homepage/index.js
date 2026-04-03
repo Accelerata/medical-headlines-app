@@ -65,7 +65,7 @@ const Homepage = () => {
       </div>
 
       <div className="homepage-content">
-        <ArticleList activeLabel={activeLabel} />
+        <ArticleList articleType="homepage" activeLabel={activeLabel} />
       </div>
     </div>
   );

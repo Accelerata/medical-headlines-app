@@ -30,7 +30,7 @@ const SearchTo = () => {
         </div>
       </div>
       <div className="searchto-content">
-        <ArticleList activeLabel="推荐" />
+        <ArticleList articleType="searchto" keyword={keyword} />
       </div>
     </div>
   );

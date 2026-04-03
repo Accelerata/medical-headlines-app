@@ -88,7 +88,12 @@ const Followed = () => {
     };
 
     return (
-      <div key={key} className="followed-row" style={style}>
+      <div
+        key={key}
+        className="followed-row"
+        style={style}
+        onClick={() => navigate(`/personto/${item.userid}`)}
+      >
         <Image
           src={item.avatar}
           style={{ borderRadius: 20, flexShrink: 0 }}

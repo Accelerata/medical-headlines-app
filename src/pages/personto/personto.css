@@ -5,6 +5,17 @@
   position: relative;
   overflow: hidden;
 }
+
+.person-header-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  margin: 12px;
+  font-size: 20px;
+}
+
 .person-header-name {
   position: absolute;
   bottom: 0;
@@ -82,10 +93,20 @@
   height: 40px;
 }
 
-.person-content-buttons-button {
+.person-content-buttons-button-unfollowed {
   width: 100%;
   height: 100%;
   border-radius: 30px;
   color: #fff;
   background-color: rgba(255, 0, 0, 0.8);
+}
+
+.person-content-buttons-button-followed {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  /*深灰*/
+  color: #fff;
+  /*浅灰*/
+  background-color: #333;
 }

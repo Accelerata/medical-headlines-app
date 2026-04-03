@@ -219,4 +219,33 @@ export const getFollowersListApi = (userId) => {
   return request.get(`/api/users/${userId}/followers`);
 };
 
+//更新用户背景图接口 POST /api/user/background
+export const updateUserBackgroundApi = (data) => {
+  return request.post("/api/user/background", data);
+};
+
+//获取用户获赞数接口/api/article/user/{userId}/likes-total
+export const getUserLikesTotalApi = (userId) => {
+  return request.get(`/api/article/user/${userId}/likes-total`);
+};
+
+//根据用户id查询文章 api/article/user/{userId}
+export const getArticleListByUserIdApi = (userId) => {
+  return request.get(`/api/article/user/${userId}`);
+};
+
+//模糊搜索接口 /api/article/search
+export const searchArticleApi = (q, page = 1, size = 10) => {
+  return request.get(`/api/article/search`, { params: { q, page, size } });
+};
+
+//个人文章列表接口 /api/article/mine
+export const getArticleListByMineApi = () => {
+  return request.get(`/api/article/mine`);
+};
+
+//根据用户id查询用户信息 /api/users/{userId}
+export const getUserInfoByIdApi = (userId) => {
+  return request.get(`/api/users/${userId}`);
+};
 export default request;

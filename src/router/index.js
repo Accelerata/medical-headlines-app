@@ -8,6 +8,7 @@ import EditorPerson from "@/pages/editorperson";
 import Search from "@/pages/search";
 import SearchTo from "@/pages/searchto";
 import Followed from "@/pages/followed";
+import PersonTo from "@/pages/personto";
 import { LOCAL_getToken } from "@/utils/localstorage";
 import { createBrowserRouter, useLocation, Navigate } from "react-router-dom";
 
@@ -36,12 +37,16 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/",
+        index: true,
         element: <Homepage />,
       },
       {
-        path: "/person",
-        element: <Person />,
+        path: "person/:id?",
+        element: (
+          <RequireAuth>
+            <Person />
+          </RequireAuth>
+        ),
       },
     ],
   },
@@ -94,6 +99,14 @@ const router = createBrowserRouter([
     element: (
       <RequireAuth>
         <Followed />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/personto/:userId?",
+    element: (
+      <RequireAuth>
+        <PersonTo />
       </RequireAuth>
     ),
   },

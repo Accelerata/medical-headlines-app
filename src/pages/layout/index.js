@@ -1,36 +1,43 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AppOutline, AddCircleOutline, UserOutline } from "antd-mobile-icons";
 import { TabBar } from "antd-mobile";
+import { LOCAL_getUserInfo } from "@/utils/localstorage";
 import "./layout.css";
 
-const tabs = [
-  {
-    key: "/",
-    title: "首页",
-    icon: <AppOutline />,
-    path: "/",
-  },
-  {
-    key: "/publish",
-    title: "发布",
-    icon: <AddCircleOutline />,
-    path: "/publish",
-  },
-  {
-    key: "/person",
-    title: "我的",
-    icon: <UserOutline />,
-    path: "/person",
-  },
-];
+function getPersonPathFromStorage() {
+  const raw = LOCAL_getUserInfo();
+  if (!raw) return "/person";
+  try {
+    const u = JSON.parse(raw);
+    const id = u?.id;
+    if (id != null && String(id) !== "") {
+      return `/person/${id}`;
+    }
+  } catch {
+    // ignore
+  }
+  return "/person";
+}
+
+function tabKeyFromPathname(pathname) {
+  if (pathname.startsWith("/person")) return "profile";
+  if (pathname.startsWith("/publish")) return "/publish";
+  return "/";
+}
 
 const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
+  const personPath = getPersonPathFromStorage();
+  const activeKey = tabKeyFromPathname(pathname);
 
-  const switchRoute = (path) => {
-    navigate(path);
+  const switchRoute = (key) => {
+    if (key === "profile") {
+      navigate(personPath);
+      return;
+    }
+    navigate(key);
   };
 
   return (
@@ -38,10 +45,10 @@ const Layout = () => {
       <div className="layout-content">
         <Outlet />
       </div>
-      <TabBar activeKey={pathname} onChange={switchRoute}>
-        {tabs.map((item) => (
-          <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
-        ))}
+      <TabBar activeKey={activeKey} onChange={switchRoute}>
+        <TabBar.Item key="/" icon={<AppOutline />} title="首页" />
+        <TabBar.Item key="/publish" icon={<AddCircleOutline />} title="发布" />
+        <TabBar.Item key="profile" icon={<UserOutline />} title="我的" />
       </TabBar>
     </div>
   );
