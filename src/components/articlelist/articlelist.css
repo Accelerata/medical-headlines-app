@@ -77,3 +77,28 @@
   text-decoration: none;
   color: inherit;
 }
+
+.articlelist-virtual-host {
+  width: 100%;
+  /* 给虚拟列表一个可被 AutoSizer 测量到的高度，否则会是 0 看起来像没数据 */
+  min-height: 400px;
+}
+
+.articlelist-empty {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+.articlelist-virtual-host {
+  width: 100%;
+  height: 100%;
+}
+
+.articlelist-empty {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}

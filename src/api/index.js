@@ -230,8 +230,8 @@ export const getUserLikesTotalApi = (userId) => {
 };
 
 //根据用户id查询文章 api/article/user/{userId}
-export const getArticleListByUserIdApi = (userId) => {
-  return request.get(`/api/article/user/${userId}`);
+export const getArticleListByUserIdApi = (userId, page = 1, size = 10) => {
+  return request.get(`/api/article/user/${userId}`, { params: { page, size } });
 };
 
 //模糊搜索接口 /api/article/search
@@ -240,12 +240,12 @@ export const searchArticleApi = (q, page = 1, size = 10) => {
 };
 
 //个人文章列表接口 /api/article/mine
-export const getArticleListByMineApi = () => {
-  return request.get(`/api/article/mine`);
+export const getArticleListByMineApi = (page = 1, size = 10) => {
+  return request.get(`/api/article/mine`, { params: { page, size } });
 };
 
 //根据用户id查询用户信息 /api/users/{userId}
-export const getUserInfoByIdApi = (userId) => {
-  return request.get(`/api/users/${userId}`);
+export const getUserInfoByIdApi = (userId, page = 1, size = 10) => {
+  return request.get(`/api/users/${userId}`, { params: { page, size } });
 };
 export default request;
