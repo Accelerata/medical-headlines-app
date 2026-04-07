@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# 医疗头条（Medical Headlines）
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个面向移动端的医疗资讯阅读应用前端项目，包含资讯流浏览、搜索、详情互动、个人中心等模块，并对长列表进行了性能优化（虚拟列表 + 滑动加载）。
 
-## Available Scripts
+> 适合作为前端项目展示：覆盖路由鉴权、请求封装、列表性能优化、文件上传、移动端 UI 组件等常见工程能力。
 
-In the project directory, you can run:
+## 功能概览
 
-### `npm start`
+- **文章/资讯**
+  - 文章列表（分类筛选）
+  - 文章详情
+  - 搜索（含搜索结果页）
+- **用户**
+  - 登录 / 鉴权访问控制
+  - 个人主页、资料编辑
+  - 关注 / 粉丝列表
+  - 头像 / 背景图上传
+- **性能优化**
+  - 长列表使用 `react-virtualized` 虚拟渲染
+  - 滑动到底自动加载下一页（分页）
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 技术栈
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **React 18**
+- **React Router**
+- **antd-mobile**（移动端组件）
+- **axios**（封装请求层：token 注入、统一错误处理等）
+- **Redux Toolkit**（项目状态管理）
+- **react-virtualized**（虚拟列表）
+- **wangeditor**（富文本编辑器能力，项目已集成依赖）
+- **CRACO**（自定义构建配置）
 
-### `npm test`
+## 本地启动
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+npm start
+```
 
-### `npm run build`
+访问：`http://localhost:3000`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 目录结构（节选）
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```text
+src/
+  api/                 # axios 实例与接口封装
+  components/          # 组件（文章、文章列表等）
+  pages/               # 页面（首页、搜索、个人页、关注/粉丝等）
+  router/              # 路由配置
+  store/               # 状态管理
+  utils/               # 工具与本地存储封装
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 说明
 
-### `npm run eject`
+- **后端接口**：本项目为前端仓库，依赖后端服务提供数据接口（登录、文章、关注等）。
+- **演示截图**：建议你在仓库根目录新增 `docs/screenshots/`，把关键页面截图放进去，然后在此 README 中插入图片展示。
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 后续规划（可选）
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 更完善的异常/空态与加载态
+- 文章列表筛选、排序与缓存策略
+- 前端埋点与数据看板（曝光/点击/停留）
