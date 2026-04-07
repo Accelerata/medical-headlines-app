@@ -35,10 +35,10 @@ const Homepage = () => {
             className="home-search"
             onClick={() => navigate("/search")}
           />
-          <div className="AI-block">
+          {/* <div className="AI-block">
             <UserCircleOutline className="AI-icon" />
             <span className="AI-text">AI助手</span>
-          </div>
+          </div> */}
         </div>
 
         <div className="homepage-label">
