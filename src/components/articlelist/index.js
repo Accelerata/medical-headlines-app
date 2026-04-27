@@ -41,7 +41,7 @@ const ArticleList = ({
 
       if (articleType === "homepage") {
         const res = await getArticleListApi(page, size, { signal });
-        console.log(res);
+        // console.log(res);
         let list = safeToArray(res?.data);
         if (activeLabel !== "推荐" && activeLabel !== "热门") {
           list = list.filter((item) => item.category === activeLabel);
