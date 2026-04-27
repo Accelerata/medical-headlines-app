@@ -32,28 +32,33 @@
 
 ## 项目演示
 
-<div>
 首页
+
+<div>
 <img src="./image/截屏2026-04-28%20上午12.44.29.png" width="300">
 </div>
 
-<div>
 个人页面
+
+<div>
 <img src="./image/截屏2026-04-28%20上午12.44.47.png" width="300">
 </div>
 
-<div>
 发布页面
+
+<div>
 <img src="./image/截屏2026-04-28%20上午12.45.01.png" width="300">
 </div>
 
-<div>
 文章详细页面
+
+<div>
 <img src="./image/截屏2026-04-28%20上午12.45.56.png" width="300">
 </div>
 
-<div>
 评论页面
+
+<div>
 <img src="./image/截屏2026-04-28%20上午12.46.08.png" width="300">
 </div>
 
